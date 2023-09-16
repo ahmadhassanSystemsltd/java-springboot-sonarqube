@@ -33,11 +33,6 @@ steps:
     ArtifactName: 'JFrog Artifacts'
     publishLocation: 'Container'
 
-- task: MavenAuthenticate@0
-  inputs:
-    mavenServiceConnections: 'maven-artifacts'
-  displayName: 'Authenticate with Azure DevOps Artifacts'
-
 - script: 'mvn deploy'
   displayName: 'Publish JFrog artifacts to Azure DevOps Artifacts'
   workingDirectory: '$(Agent.TempDirectory)/jars'
