@@ -1,0 +1,43 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+
+- script: |
+    mkdir -p $(Agent.TempDirectory)/jars
+    curl -u admin:Reh@9968 -o $(Agent.TempDirectory)/jars/my-artifact.jar http://74.235.136.21:8081/artifactory/libs-snapshot-local/com/mycompany/app/my-app/1.0-SNAPSHOT/my-app-1.0-SNAPSHOT.jar
+  displayName: 'Download JAR file from JFrog Artifactory'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish JFrog Artifacts'
+  inputs:
+    PathtoPublish: '$(Agent.TempDirectory)/jars'
+    ArtifactName: 'JFrog Artifacts'
+    publishLocation: 'Container'
+
+- task: MavenAuthenticate@0
+  inputs:
+    mavenServiceConnections: 'maven-artifacts'
+  displayName: 'Authenticate with Azure DevOps Artifacts'
+
+- script: 'mvn deploy'
+  displayName: 'Publish JFrog artifacts to Azure DevOps Artifacts'
+  workingDirectory: '$(Agent.TempDirectory)/jars'
