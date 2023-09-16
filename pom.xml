@@ -8,6 +8,12 @@
 		<version>2.2.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<distributionManagement>
+        <repository>
+            <id>DevOps</id> <!-- This should match the server ID in your settings.xml -->
+            <url>https://pkgs.dev.azure.com/ahmadhassanfirdous/Testing-Pipeline-KE/_packaging/DevOps/maven/v1</url>
+        </repository>
+    </distributionManagement>
 	<groupId>com.binpipe.spboot</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
