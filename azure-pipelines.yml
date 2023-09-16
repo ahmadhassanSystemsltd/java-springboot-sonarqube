@@ -7,7 +7,7 @@ pool:
 steps:
 - task: MavenAuthenticate@0
   inputs:
-    mavenServiceConnections: 'your-maven-service-connection'
+    mavenServiceConnections: 'maven-artifacts'
   displayName: 'Authenticate with Maven'
 - task: Maven@3
   inputs:
