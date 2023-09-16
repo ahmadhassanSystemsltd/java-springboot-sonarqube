@@ -34,4 +34,5 @@ steps:
 
 - script: 'mvn deploy'
   displayName: 'Publish JFrog artifacts to Azure DevOps Artifacts'
-  workingDirectory: '$(Agent.TempDirectory)/jars'
+  workingDirectory: '$(System.DefaultWorkingDirectory)' # Change this to the correct directory of your Maven project
+
